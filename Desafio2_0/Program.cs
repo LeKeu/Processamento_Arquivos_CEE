@@ -1,15 +1,19 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Desafio2_0.Classes;
 using Desafio2_0.Models;
+using Hanssens.Net;
 
 string arq = "CARD20230619001.IN";
 string data_arq = arq.Substring(4, 8);
 
+
+var storage = new LocalStorage();
+
 if (ServicosChecagem.IsValid_NomeArq(arq))
 {
-    List<Solicitacao> SolicitacaoList = new List<Solicitacao>();
-
-    //string arqTeste = ServicosTexto.ReadAll(arq);
+    //List<Solicitacao> SolicitacaoList = new List<Solicitacao>();
+    //List<Bloqueio> BloqueioList = new List<Bloqueio>();
+    //List<Cancelamento> CancelamentoList = new List<Cancelamento>();
 
     string[] arqLinhas = ServicosTexto.ReadLines(arq);
     int auxLinhas = 0;
@@ -52,17 +56,17 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 solicitacao.DiaVencimento = Aux[3];
 
                 if (ServicosChecagem.IsValid_Solicitacao(solicitacao, data_arq))
-                    Console.WriteLine("solicitacao valida nice");
+                {
+                    Armazenamento.Salvar(solicitacao.Conta, "solicitacoes.txt");
+                    //SolicitacaoList.Add(solicitacao);
+                }
                 else Console.WriteLine("nop Sol");
 
-                //SolicitacaoList.Add(solicitacao);
                 auxLinhas++;
                 break;
 
             case "02":
                 Bloqueio bloqueio = new Bloqueio();
-                //02 20230619 000125 0015 000000028001 01 000025
-                Console.WriteLine("------------------");
 
                 bloqueio.Tipo = tipo;
                 bloqueio.Data = registro.Substring(2, 8);
@@ -73,16 +77,16 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 bloqueio.Id_O = registro.Substring(34);
 
                 if (ServicosChecagem.IsValid_Bloqueio(bloqueio, data_arq))
-                    Console.WriteLine("Bloqueio validow nice");
+                    Processamento.Processamento_Contas(bloqueio.Conta, "bloqueios.txt");
+                    //Armazenamento.Salvar(bloqueio.Conta, "bloqueios.txt");
                 else Console.WriteLine("nop Bloq");
 
-
+                //Processamento.Processamento_Bloqueio(SolicitacaoList, bloqueio);
                 auxLinhas++;
                 break;
 
             case "03":
                 Cancelamento cancelamento = new Cancelamento();
-                Console.WriteLine("------------------");
 
                 cancelamento.Tipo = tipo;
                 cancelamento.Data = registro.Substring(2, 8);
@@ -93,9 +97,9 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 cancelamento.Id_O = registro.Substring(34);
 
                 if (ServicosChecagem.IsValid_Cancelamento(cancelamento, data_arq))
-                    Console.WriteLine("Cancelamento valida nice");
+                    Processamento.Processamento_Contas(cancelamento.Conta, "cancelamentos.txt");
+                //Armazenamento.Salvar(cancelamento.Conta, "cancelamentos.txt");
                 else Console.WriteLine("nop Canc");
-
 
                 auxLinhas++;
                 break;

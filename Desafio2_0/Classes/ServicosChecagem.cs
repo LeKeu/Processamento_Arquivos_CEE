@@ -16,7 +16,6 @@ namespace Desafio2_0.Classes
             && text.Substring(text.Length - 3) == ".IN") ? true : false;
 
 
-        // Checar se o header é válido (00, data, tamanho)
         public static bool IsValid_Header(Header h, string data_Name) => 
             (h.Data == data_Name && h.Tipo == "00" && h.Tamanho == 16) ? true : false;
 

@@ -14,6 +14,8 @@ namespace Desafio2_0.Classes
 
         public static string[] ReadLines(string nomeArq) => File.ReadAllLines(Globals.PATH + nomeArq);
 
+        public static string[] ReadLines_Sol(string nomeArq) => File.ReadAllLines(Globals.PATH_SOL + nomeArq);
+
         public static string[] SepararNome(string registro)
         {
             List <string> results = new List <string> ();
@@ -32,7 +34,6 @@ namespace Desafio2_0.Classes
                     break;
                 nome += palavra + " ";
                 aux++;
-                //if (Char.IsLetter(palavra))
             }
             results.Add(nome);
             for (int i = aux; i < words.Length; i++)
