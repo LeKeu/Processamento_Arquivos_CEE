@@ -17,6 +17,7 @@ namespace Desafio2_0.Classes
         Caso a conta a ser bloqueada/cancelada exista no arquivo, ela não pode ser bloqueada/cancelada
             por nunca ter sido solicitada primeiramente.
         */
+
         public static void Processamento_Contas(string conta, string arq)
         {
             string[] contas = ServicosTexto.ReadLines_Sol("solicitacoes.txt");
