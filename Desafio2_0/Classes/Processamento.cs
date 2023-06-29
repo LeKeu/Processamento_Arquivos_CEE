@@ -26,7 +26,7 @@ namespace Desafio2_0.Classes
 
             bool isSol = false;     // checar se a solicitação já existe
             bool isContasAux = false;   //checar se a conta já foi bloq/cance
-            bool isContaBloq = false;
+            bool isContaBloq = false;   // checar se a conta já foi bloq (situação de cancelamento).
 
             foreach (string c in contas_Sol)
             {
@@ -60,13 +60,12 @@ namespace Desafio2_0.Classes
                     else Console.WriteLine("Conta já Cancelada");
                 }
             }
-            if (!isSol)
+            if (!isSol && arq == "bloqueios.txt")
                 Console.WriteLine("-----\nConta não existe - " + arq + "\nSolicite a conta "+conta+"\n-----\n");
-        }
-
-        public static void PodeBloquear(string conta)
-        {
+            else if (!isSol && arq == "cancelamentos.txt")
+                Console.WriteLine("-----\nConta não existe - " + arq + "\nSolicite a conta " + conta + "\n-----\n");
 
         }
+
     }
 }

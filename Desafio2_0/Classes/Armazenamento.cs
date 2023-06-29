@@ -25,7 +25,7 @@ namespace Desafio2_0.Classes
 
             if (!isSol)
             {
-                using (StreamWriter outputFile = new StreamWriter(Path.Combine(Globals.PATH_SOL, arq), true))
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(Globals.PATH_DADOS, arq), true))
                 {
                     outputFile.WriteLine(conta);
                 }

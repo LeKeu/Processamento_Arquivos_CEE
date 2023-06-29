@@ -14,7 +14,7 @@ namespace Desafio2_0.Classes
 
         public static string[] ReadLines(string nomeArq) => File.ReadAllLines(Globals.PATH + nomeArq);
 
-        public static string[] ReadLines_Sol(string nomeArq) => File.ReadAllLines(Globals.PATH_SOL + nomeArq);
+        public static string[] ReadLines_Sol(string nomeArq) => File.ReadAllLines(Globals.PATH_DADOS + nomeArq);
 
         public static string[] SepararNome(string registro)
         {

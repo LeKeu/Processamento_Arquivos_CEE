@@ -6,8 +6,12 @@ using Hanssens.Net;
 string arq = "CARD20230619001.IN";
 string data_arq = arq.Substring(4, 8);
 
+bool IsErro = false;
 
 var storage = new LocalStorage();
+
+List<Header> headerList = new List<Header>();
+List<Trailler> traillerList = new List<Trailler>();
 
 if (ServicosChecagem.IsValid_NomeArq(arq))
 {
@@ -34,7 +38,7 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 header.Tamanho = registro.Length;
 
                 if (ServicosChecagem.IsValid_Header(header, data_arq))
-                    Console.WriteLine("header valido legal");
+                    headerList.Add(header);
 
                 auxLinhas++;
                 break;
@@ -56,11 +60,11 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 solicitacao.DiaVencimento = Aux[3];
 
                 if (ServicosChecagem.IsValid_Solicitacao(solicitacao, data_arq))
-                {
                     Armazenamento.Salvar(solicitacao.Conta, "solicitacoes.txt");
-                    //SolicitacaoList.Add(solicitacao);
+                else { 
+                    Globals.ERROS.Add(solicitacao.Tipo + solicitacao.Data + solicitacao.Id + (new Random()).Next(1000, 9999) + "A     Solicitação Inválida.");
+                    IsErro = true;
                 }
-                else Console.WriteLine("nop Sol");
 
                 auxLinhas++;
                 break;
@@ -78,10 +82,11 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
 
                 if (ServicosChecagem.IsValid_Bloqueio(bloqueio, data_arq))
                     Processamento.Processamento_Contas(bloqueio.Conta, "bloqueios.txt");
-                    //Armazenamento.Salvar(bloqueio.Conta, "bloqueios.txt");
-                else Console.WriteLine("nop Bloq");
+                else {
+                    Globals.ERROS.Add(bloqueio.Tipo + bloqueio.Data + bloqueio.Id_T + (new Random()).Next(1000, 9999) + "B     Bloqueio Inválido.");
+                    IsErro = true;
+                }
 
-                //Processamento.Processamento_Bloqueio(SolicitacaoList, bloqueio);
                 auxLinhas++;
                 break;
 
@@ -98,8 +103,10 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
 
                 if (ServicosChecagem.IsValid_Cancelamento(cancelamento, data_arq))
                     Processamento.Processamento_Contas(cancelamento.Conta, "cancelamentos.txt");
-                //Armazenamento.Salvar(cancelamento.Conta, "cancelamentos.txt");
-                else Console.WriteLine("nop Canc");
+                else {
+                    Globals.ERROS.Add(cancelamento.Tipo + cancelamento.Data + cancelamento.Id_T + (new Random()).Next(1000, 9999) + "C     Cancelamento Inválido.");
+                    IsErro = true;
+                }
 
                 auxLinhas++;
                 break;
@@ -113,7 +120,7 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 auxLinhas++;
 
                 if (ServicosChecagem.IsValid_Trailler(trailler, data_arq, arqLinhas.Length, auxLinhas))
-                    Console.WriteLine("Trailler valida nice");
+                    traillerList.Add(trailler);
                 else Console.WriteLine("nop trailler");
 
 
@@ -126,11 +133,12 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
         }
     }
 
+
+    if (IsErro)
+        ArquivoErro.ERR(arq, headerList[0], traillerList[0]);
+    else Console.WriteLine("Sem erros no arquivo.");
     
 
-    
-
-    Console.WriteLine();
 }
 else
 {
