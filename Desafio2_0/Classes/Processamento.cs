@@ -20,18 +20,53 @@ namespace Desafio2_0.Classes
 
         public static void Processamento_Contas(string conta, string arq)
         {
-            string[] contas = ServicosTexto.ReadLines_Sol("solicitacoes.txt");
-            bool isSol = false;
-            foreach (string c in contas)
+            string[] contas_Sol = ServicosTexto.ReadLines_Sol("solicitacoes.txt");
+            string[] contasAux = ServicosTexto.ReadLines_Sol(arq);
+            
+
+            bool isSol = false;     // checar se a solicitação já existe
+            bool isContasAux = false;   //checar se a conta já foi bloq/cance
+            bool isContaBloq = false;
+
+            foreach (string c in contas_Sol)
             {
                 if (c == conta)
                 {
                     isSol = true;
-                    Armazenamento.Salvar(conta, arq);
+
+                    if (arq == "cancelamentos.txt") //se for cancelamnto, checar se a conta já foi préviamente cancelada
+                    {
+                        string[] contasBloq = ServicosTexto.ReadLines_Sol("bloqueios.txt"); 
+                        foreach(string cBloq in contasBloq)
+                        {
+                            if (cBloq == conta)
+                                isContaBloq= true;
+                        }
+                    }
+
+                    foreach (string c1 in contasAux)    //checagem do próprio arquivo recebido para checar a existencia da conta nele
+                    {
+                        if (c1 == conta)
+                            isContasAux = true;
+                    }
+                    
+                    if (!isContasAux && arq == "bloqueios.txt")
+                        Armazenamento.Salvar(conta, arq);
+                    else Console.WriteLine("Conta já Bloqueada");
+
+                    if (!isContasAux && isContaBloq)
+                        Armazenamento.Salvar(conta, arq);
+                    else if (!isContaBloq) Console.WriteLine(conta + "Conta precisa ser bloqueada para prosseguir com o cancelamento.");
+                    else Console.WriteLine("Conta já Cancelada");
                 }
             }
             if (!isSol)
                 Console.WriteLine("-----\nConta não existe - " + arq + "\nSolicite a conta "+conta+"\n-----\n");
+        }
+
+        public static void PodeBloquear(string conta)
+        {
+
         }
     }
 }
