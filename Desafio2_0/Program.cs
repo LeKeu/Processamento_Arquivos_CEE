@@ -6,8 +6,6 @@ using Hanssens.Net;
 string arq = "CARD20230619001.IN";
 string data_arq = arq.Substring(4, 8);
 
-bool IsErro = false;
-
 var storage = new LocalStorage();
 
 List<Header> headerList = new List<Header>();
@@ -63,7 +61,7 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                     Armazenamento.Salvar(solicitacao.Conta, "solicitacoes.txt");
                 else { 
                     Globals.ERROS.Add(solicitacao.Tipo + solicitacao.Data + solicitacao.Id + (new Random()).Next(1000, 9999) + "A     Solicitação Inválida.");
-                    IsErro = true;
+                    Globals.ISERRO = true;
                 }
 
                 auxLinhas++;
@@ -81,10 +79,10 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 bloqueio.Id_O = registro.Substring(34);
 
                 if (ServicosChecagem.IsValid_Bloqueio(bloqueio, data_arq))
-                    Processamento.Processamento_Contas(bloqueio.Conta, "bloqueios.txt");
+                    Processamento.Processamento_Contas(registro, "bloqueios.txt");
                 else {
                     Globals.ERROS.Add(bloqueio.Tipo + bloqueio.Data + bloqueio.Id_T + (new Random()).Next(1000, 9999) + "B     Bloqueio Inválido.");
-                    IsErro = true;
+                    Globals.ISERRO = true;
                 }
 
                 auxLinhas++;
@@ -102,10 +100,10 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
                 cancelamento.Id_O = registro.Substring(34);
 
                 if (ServicosChecagem.IsValid_Cancelamento(cancelamento, data_arq))
-                    Processamento.Processamento_Contas(cancelamento.Conta, "cancelamentos.txt");
+                    Processamento.Processamento_Contas(registro, "cancelamentos.txt");
                 else {
                     Globals.ERROS.Add(cancelamento.Tipo + cancelamento.Data + cancelamento.Id_T + (new Random()).Next(1000, 9999) + "C     Cancelamento Inválido.");
-                    IsErro = true;
+                    Globals.ISERRO = true;
                 }
 
                 auxLinhas++;
@@ -134,7 +132,7 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
     }
 
 
-    if (IsErro)
+    if (Globals.ISERRO)
         ArquivoErro.ERR(arq, headerList[0], traillerList[0]);
     else Console.WriteLine("Sem erros no arquivo.");
     

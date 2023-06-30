@@ -18,10 +18,16 @@ namespace Desafio2_0.Classes
             por nunca ter sido solicitada primeiramente.
         */
 
-        public static void Processamento_Contas(string conta, string arq)
+        public static void Processamento_Contas(string registro, string arq)
         {
+            List<string> objetos = SepararTexto(registro);
             string[] contas_Sol = ServicosTexto.ReadLines_Sol("solicitacoes.txt");
             string[] contasAux = ServicosTexto.ReadLines_Sol(arq);
+
+            string tipo = objetos[0];
+            string data = objetos[1];
+            string id_t = objetos[2];
+            string conta = objetos[3];
             
 
             bool isSol = false;     // checar se a solicitação já existe
@@ -49,22 +55,58 @@ namespace Desafio2_0.Classes
                         if (c1 == conta)
                             isContasAux = true;
                     }
-                    
+
                     if (!isContasAux && arq == "bloqueios.txt")
                         Armazenamento.Salvar(conta, arq);
-                    else Console.WriteLine("Conta já Bloqueada");
+                    else {
+                        Globals.ISERRO = true;
+                        Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "B     Conta já bloqueada.");
+
+                    }
 
                     if (!isContasAux && isContaBloq)
                         Armazenamento.Salvar(conta, arq);
-                    else if (!isContaBloq) Console.WriteLine(conta + "Conta precisa ser bloqueada para prosseguir com o cancelamento.");
-                    else Console.WriteLine("Conta já Cancelada");
+                    else if (!isContaBloq)
+                    {
+                        Globals.ISERRO = true;
+                        Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "C     Conta precisa ser bloqueada para seguir com cancelamento.");
+                    }
+                    else {
+                        Globals.ISERRO = true;
+                        Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "C     Conta já cancelada.");
+                    }
+                    
                 }
             }
-            if (!isSol && arq == "bloqueios.txt")
-                Console.WriteLine("-----\nConta não existe - " + arq + "\nSolicite a conta "+conta+"\n-----\n");
+            if (!isSol && arq == "bloqueios.txt") {
+                Globals.ISERRO = true;
+                Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "B     Conta não encontrada.");
+            }
             else if (!isSol && arq == "cancelamentos.txt")
-                Console.WriteLine("-----\nConta não existe - " + arq + "\nSolicite a conta " + conta + "\n-----\n");
+            {
+                Globals.ISERRO = true;
+                Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "C     Conta não encontrada.");
+            }
+                
 
+        }
+
+        private static List<string> SepararTexto(string registro)
+        {
+            List<string> retorno = new List<string>();
+            Console.WriteLine(registro);
+            Console.WriteLine(registro.Length);
+            string tipo = registro.Substring(0, 2);
+            string data = registro.Substring(2, 8);
+            string Id_T = registro.Substring(10, 6);
+            string Conta = registro.Substring(20, 12);
+
+            retorno.Add(tipo);
+            retorno.Add(data);
+            retorno.Add(Id_T);
+            retorno.Add(Conta);
+
+            return retorno;
         }
 
     }
