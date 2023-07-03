@@ -28,7 +28,6 @@ namespace Desafio2_0.Classes
             string data = objetos[1];
             string id_t = objetos[2];
             string conta = objetos[3];
-            
 
             bool isSol = false;     // checar se a solicitação já existe
             bool isContasAux = false;   //checar se a conta já foi bloq/cance
@@ -58,7 +57,7 @@ namespace Desafio2_0.Classes
 
                     if (!isContasAux && arq == "bloqueios.txt")
                         Armazenamento.Salvar(conta, arq);
-                    else {
+                    else if (isContasAux && arq == "bloqueios.txt") {
                         Globals.ISERRO = true;
                         Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "B     Conta já bloqueada.");
 
@@ -66,16 +65,15 @@ namespace Desafio2_0.Classes
 
                     if (!isContasAux && isContaBloq)
                         Armazenamento.Salvar(conta, arq);
-                    else if (!isContaBloq)
+                    else if (!isContaBloq && arq == "cancelamentos.txt")
                     {
                         Globals.ISERRO = true;
                         Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "C     Conta precisa ser bloqueada para seguir com cancelamento.");
                     }
-                    else {
+                    else if (isContasAux && arq == "cancelamentos.txt") {
                         Globals.ISERRO = true;
                         Globals.ERROS.Add(tipo + data + id_t + (new Random()).Next(1000, 9999) + "C     Conta já cancelada.");
                     }
-                    
                 }
             }
             if (!isSol && arq == "bloqueios.txt") {
@@ -94,8 +92,6 @@ namespace Desafio2_0.Classes
         private static List<string> SepararTexto(string registro)
         {
             List<string> retorno = new List<string>();
-            Console.WriteLine(registro);
-            Console.WriteLine(registro.Length);
             string tipo = registro.Substring(0, 2);
             string data = registro.Substring(2, 8);
             string Id_T = registro.Substring(10, 6);

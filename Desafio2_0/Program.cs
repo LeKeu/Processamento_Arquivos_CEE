@@ -1,22 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Desafio2_0.Classes;
 using Desafio2_0.Models;
-using Hanssens.Net;
 
-string arq = "CARD20230619001.IN";
+string arq = "CARD20230702001.IN";
 string data_arq = arq.Substring(4, 8);
-
-var storage = new LocalStorage();
 
 List<Header> headerList = new List<Header>();
 List<Trailler> traillerList = new List<Trailler>();
 
 if (ServicosChecagem.IsValid_NomeArq(arq))
 {
-    //List<Solicitacao> SolicitacaoList = new List<Solicitacao>();
-    //List<Bloqueio> BloqueioList = new List<Bloqueio>();
-    //List<Cancelamento> CancelamentoList = new List<Cancelamento>();
-
     string[] arqLinhas = ServicosTexto.ReadLines(arq);
     int auxLinhas = 0;
 
@@ -131,12 +124,9 @@ if (ServicosChecagem.IsValid_NomeArq(arq))
         }
     }
 
-
     if (Globals.ISERRO)
         ArquivoErro.ERR(arq, headerList[0], traillerList[0]);
     else Console.WriteLine("Sem erros no arquivo.");
-    
-
 }
 else
 {

@@ -15,7 +15,6 @@ namespace Desafio2_0.Classes
             && int.TryParse(text.Substring(8, 2), out _) && int.TryParse(text.Substring(10, 2), out _) 
             && text.Substring(text.Length - 3) == ".IN") ? true : false;
 
-
         public static bool IsValid_Header(Header h, string data_Name) => 
             (h.Data == data_Name && h.Tipo == "00" && h.Tamanho == 16) ? true : false;
 
@@ -34,47 +33,6 @@ namespace Desafio2_0.Classes
 
         public static bool IsValid_Trailler(Trailler t, string data_Name, int linhas, int auxLinhas) => 
             (t.Data == data_Name && int.Parse(t.Tot_Registros) == linhas && int.Parse(t.Tot_Registros) == auxLinhas) ? true : false;
-        public static void isValid_Solicitacao0(Solicitacao s, string data_Name)
-        {
-            if (s.Data == data_Name)
-                Console.WriteLine("dia igual "+s.Data);
-            if (int.TryParse(s.Id, out _))
-                Console.WriteLine("id ok "+ s.Id);
-            if (int.TryParse(s.Agencia, out _))
-                Console.WriteLine("agencia ok "+ s.Agencia);
-            if (int.TryParse(s.Conta, out _))
-                Console.WriteLine("conta ok "+ s.Conta);
-            if (long.TryParse(s.Cpf, out _))
-                Console.WriteLine("cpf ok "+ s.Cpf);
-            if (s.Nome.Length <= 40)
-                Console.WriteLine("nome ok "+ s.Nome.Length);
-            if (s.NomeCartao.Length <= 40)
-                Console.WriteLine("nomeCard ok "+ s.NomeCartao.Length);
-            if (int.TryParse(s.DiaVencimento, out _))
-                Console.WriteLine("diaV ok "+ s.DiaVencimento);
-            if (s.Senha.Length == 8)
-                Console.WriteLine("senha ok "+ s.Senha.Length);
-        }
-        
 
-
-
-
-
-        /*
-        public static bool IsValidDetails(string text)
-        {
-            string card = text.Substring(0, 4);
-
-            string ano = text.Substring(4, 4);
-
-            string mes = text.Substring(8, 2);
-
-            string dia = text.Substring(10, 2);
-
-            string sequencia = text.Substring(12).Remove(3);
-            return true;
-        }
-        */
     }
 }
